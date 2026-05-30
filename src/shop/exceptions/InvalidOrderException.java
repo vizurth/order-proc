@@ -1,0 +1,11 @@
+package shop.exceptions;
+
+public class InvalidOrderException extends AppException {
+    public InvalidOrderException(String message) {
+        super(message);
+    }
+
+    public InvalidOrderException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
