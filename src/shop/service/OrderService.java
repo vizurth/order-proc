@@ -16,7 +16,7 @@ public class OrderService {
         this.productService = productService;
     }
 
-    public Order createOrder(List<OrderItem> items) throws InvalidOrderException, OutOfStockException, ProductNotFoundException {
+    public Order createOrder(List<OrderItem> items) throws AppException {
         if (items.isEmpty()) {
             throw new EmptyOrderException("Items list is empty.");
         }
@@ -29,8 +29,12 @@ public class OrderService {
     }
 
     public void processPayment(Order order, double availableFunds) throws PaymentException {
-        if (order.totalPrice() >  availableFunds) {
-            throw new InsufficientFundsException("Not enough money to pay for order.");
+        try {
+            if (order.totalPrice() >  availableFunds) {
+                throw new InsufficientFundsException("Not enough funds");
+            }
+        } catch (InsufficientFundsException e) {
+            throw new PaymentException("Payment failed", e);
         }
 
         // симулируем Timeout
